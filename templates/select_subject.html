@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Asignatura</title>
+</head>
+<body>
+    <h1>Seleccionar Asignatura</h1>
+    <form action="" method="post">
+        <label for="subject">Seleccionar Asignatura:</label><br>
+        <select name="subject">
+            {% for subject in data %}
+                <option value="{{ subject.subject_code }}">{{ subject.subject_name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Visualizar">
+    </form>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Datos de Asignatura</title>
+</head>
+<body>
+    <h1>Visualización de Datos de Asignatura</h1>
+    <h2>{{ subject_data.subject_name }}</h2>
+    <table border="1">
+        <tr>
+            <th>Enrollment</th>
+            <th>Pass</th>
+            <th>Rate</th>
+        </tr>
+        <tr>
+            <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.performance.pass }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.performance.rate }}</td>
+        </tr>
+        <tr>
+            <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.success.pass }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.success.rate }}</td>
+        </tr>
+        <tr>
+            <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.abandonment.pass }}</td>
+            <td>{{ subject_data.reports_info[0].ratings_data.abandonment.rate }}</td>
+        </tr>
+    </table>
+    <h2>Gráfico de Pie</h2>
+    {{ pie_chart|safe }}
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Datos de Asignaturas</title>
+</head>
+<body>
+    <h1>Visualización de Datos de Asignaturas</h1>
+    <table border="1">
+        <tr>
+            <th>Código de Asignatura</th>
+            <th>Nombre de Asignatura</th>
+            <th>Matrícula Una Vez</th>
+            <th>Matrícula Dos Veces</th>
+            <th>Matrícula Tres Veces</th>
+            <th>Total de Matrículas</th>
+            <th>Rendimiento</th>
+            <th>Éxito</th>
+            <th>Abandono</th>
+        </tr>
+        {% for subject_code, subject_data in subjects_data.items() %}
+        <tr>
+            <td>{{ subject_code }}</td>
+            <td>{{ subject_data.subject_name }}</td>
+            <td>{{ subject_data.enrollment_data.one_time }}</td>
+            <td>{{ subject_data.enrollment_data.two_times }}</td>
+            <td>{{ subject_data.enrollment_data.three_times }}</td>
+            <td>{{ subject_data.enrollment_data.total }}</td>
+            <td>{{ subject_data.ratings_data.performance.rate }}</td>
+            <td>{{ subject_data.ratings_data.success.rate }}</td>
+            <td>{{ subject_data.ratings_data.abandonment.rate }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
