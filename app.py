@@ -71,5 +71,47 @@ def visualize_data(year, term):
 
     return "Archivo no encontrado"
 
+@app.route('/<year>/<term>/select_multiple_subjects', methods=['GET'])
+def select_multiple_subjects(year, term):
+    # Encuentra la ruta del archivo JSON de las asignaturas
+    filename = f"./data/{year}/{term}.json"
+    if os.path.exists(filename):
+        # Carga los datos del archivo JSON
+        with open(filename, 'r') as file:
+            subjects = json.load(file)
+        return render_template('select_multiple_subjects.html', year=year, term=term, subjects=subjects)
+    else:
+        return "Error: El archivo de datos no existe."
+
+@app.route('/<year>/<term>/visualize_multiple_subjects', methods=['GET'])
+def visualize_multiple_subjects(year, term):
+    if request.method == 'GET':
+        selected_subjects = request.args.getlist('asignaturas')  # Obtiene las asignaturas seleccionadas
+        
+        # Encuentra la ruta del archivo JSON de todas las asignaturas
+        filename = f"./data/{year}/{term}.json"
+        if os.path.exists(filename):
+            # Carga los datos del archivo JSON
+            with open(filename, 'r') as file:
+                all_subjects_data = json.load(file)
+                
+            # Filtra las asignaturas seleccionadas
+            selected_subjects_data = [subject for subject in all_subjects_data if subject['subject_code'] in selected_subjects]
+            
+            # Genera los gráficos de tarta para cada asignatura seleccionada
+            pie_charts = {}
+            for subject_data in selected_subjects_data:
+                pie_charts[subject_data['subject_code']] = generate_pie_charts(subject_data['reports_info'][0]['ratings_data'])
+            
+            # Renderiza la plantilla visualize_multiple_subjects.html para mostrar los datos de las asignaturas seleccionadas
+            return render_template('visualize_multiple_subjects.html', subjects_data=selected_subjects_data, pie_charts=pie_charts)
+        else:
+            return "Error: El archivo de datos no existe."
+    else:
+        return "Error: Método POST no permitido en esta ruta."
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

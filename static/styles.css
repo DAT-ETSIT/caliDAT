@@ -10,6 +10,7 @@ body {
 
 .container {
     width: 80%;
+    margin: 0 auto; /* Centrar horizontalmente */
 }
 
 h1, h2, h3 {

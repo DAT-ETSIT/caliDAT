@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Múltiples Asignaturas</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Visualización de Múltiples Asignaturas</h1>
+
+        <!-- Itera sobre los datos de las asignaturas seleccionadas -->
+        {% for subject_data in subjects_data %}
+            <div class="subject">
+                <h2>{{ subject_data.subject_name }} - {{ subject_data.subject_code }}</h2>
+                <h3>Datos de matriculación</h3>
+                <table border="1">
+                    <tr>
+                        <th>Número de veces matriculado</th>
+                        <th>Número de alumnos</th>
+                    </tr>
+                    <tr>
+                        <td>Una vez</td>
+                        <td>{{ subject_data.reports_info[0].enrollment_data.one_time }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dos veces</td>
+                        <td>{{ subject_data.reports_info[0].enrollment_data.two_times }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tres veces o más</td>
+                        <td>{{ subject_data.reports_info[0].enrollment_data.three_times }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total </td>
+                        <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
+                    </tr>
+                </table>
+                <h3>Tasas</h3>
+                <div id="pie-charts">
+                    <div class="pie-chart-container">
+                        <h4>Rendimiento</h4>
+                        {{ pie_charts[subject_data.subject_code]['performance']|safe }}
+                    </div>
+                    <div class="pie-chart-container">
+                        <h4>Éxito</h4>
+                        {{ pie_charts[subject_data.subject_code]['success']|safe }}
+                    </div>
+                    <div class="pie-chart-container">
+                        <h4>Abandono</h4>
+                        {{ pie_charts[subject_data.subject_code]['abandonment']|safe }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
