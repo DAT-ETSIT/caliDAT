@@ -30,8 +30,8 @@ def generate_pie_charts(ratings_data):
             rate_percentage = passed / enrolled * 100
         else:
             rate_percentage = 0
-        labels = ['Aprobado', 'Suspenso']
-        values = [rate_percentage, 100 - rate_percentage]
+        labels = ['Aprobados', 'Suspensos']
+        values = [passed, enrolled - passed]
         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
         if fig.data:
             # Asegurarse de que colors esté inicializado
@@ -40,9 +40,11 @@ def generate_pie_charts(ratings_data):
             else:
                 # Añadir identificador único a cada "slice" solo si hay datos
                 for i, label in enumerate(labels):
-                    fig.data[0].marker.colors[i] = 'red' if label == 'Suspenso' else 'green'
+                    fig.data[0].marker.colors[i] = 'red' if label == 'Suspensos' else 'green'
+        fig.update_traces(hoverinfo='label+percent+value')
         charts[metric] = fig.to_html(full_html=False)
     return charts
+
 
 
 
