@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Datos de Asignatura</title>
+    <style>
+        .pie-chart-container {
+            display: inline-block;
+            width: 30%; /* Ajusta este valor según sea necesario */
+            margin-right: 20px; /* Espacio entre gráficos */
+        }
+    </style>
 </head>
 <body>
     <h1>Visualización de Datos de Asignatura</h1>
@@ -30,7 +37,20 @@
             <td>{{ subject_data.reports_info[0].ratings_data.abandonment.rate }}</td>
         </tr>
     </table>
-    <h2>Gráfico de Pie</h2>
-    {{ pie_chart|safe }}
+    <h2>Gráficos de Pie</h2>
+    <div id="pie-charts">
+        <div class="pie-chart-container">
+            <h3>Rendimiento</h3>
+            {{ pie_charts['performance']|safe }}
+        </div>
+        <div class="pie-chart-container">
+            <h3>Éxito</h3>
+            {{ pie_charts['success']|safe }}
+        </div>
+        <div class="pie-chart-container">
+            <h3>Abandono</h3>
+            {{ pie_charts['abandonment']|safe }}
+        </div>
+    </div>
 </body>
 </html>

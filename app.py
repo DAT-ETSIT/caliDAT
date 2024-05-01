@@ -21,11 +21,30 @@ def load_subject_data(year, term):
         return None
 
 # Función para generar los gráficos de pie
-def generate_pie_chart(data):
-    labels = ['Rendimiento', 'Éxito', 'Abandono']
-    values = [float(data['performance']['rate']), float(data['success']['rate']), float(data['abandonment']['rate'])]
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-    return fig.to_html(full_html=False)
+def generate_pie_charts(ratings_data):
+    charts = {}
+    for metric in ['performance', 'success', 'abandonment']:
+        enrolled = int(ratings_data[metric]['enrolled'])
+        passed = int(ratings_data[metric]['pass'])
+        if enrolled > 0:
+            rate_percentage = passed / enrolled * 100
+        else:
+            rate_percentage = 0
+        labels = ['Aprobado', 'Suspenso']
+        values = [rate_percentage, 100 - rate_percentage]
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+        if fig.data:
+            # Asegurarse de que colors esté inicializado
+            if not fig.data[0].marker.colors:
+                fig.data[0].marker.colors = ['green', 'red']
+            else:
+                # Añadir identificador único a cada "slice" solo si hay datos
+                for i, label in enumerate(labels):
+                    fig.data[0].marker.colors[i] = 'red' if label == 'Suspenso' else 'green'
+        charts[metric] = fig.to_html(full_html=False)
+    return charts
+
+
 
 # Ruta para visualizar datos de una asignatura específica
 @app.route('/<year>/<term>', methods=['GET', 'POST'])
@@ -41,8 +60,8 @@ def visualize_data(year, term):
             for subject in data:
                 if subject['subject_code'] == subject_code:
                     subject_data = subject
-                    pie_chart = generate_pie_chart(subject_data['reports_info'][0]['ratings_data'])
-                    return render_template('visualize_subject.html', subject_data=subject_data, pie_chart=pie_chart)
+                    pie_charts = generate_pie_charts(subject_data['reports_info'][0]['ratings_data'])
+                    return render_template('visualize_subject.html', subject_data=subject_data, pie_charts=pie_charts)
         else:
             return render_template('select_subject.html', data=data)
 
