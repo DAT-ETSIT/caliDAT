@@ -11,7 +11,7 @@
         <h1>Seleccionar Múltiples Asignaturas</h1>
 
         <!-- Formulario para seleccionar múltiples asignaturas -->
-        <form action="/{{ year }}/{{ term }}/visualize_multiple_subjects" method="get">
+        <form action="/{{ year }}/{{ degree }}/visualize_multiple_subjects" method="get">
             <label for="asignaturas">Selecciona las asignaturas:</label>
             <select name="asignaturas" id="asignaturas" multiple>
                 {% for subject in subjects %}

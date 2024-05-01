@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar curso académico</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Seleccionar curso académico</h1>
+    <ul>
+        {% for folder in folders %}
+            <li><a href="/{{ folder }}">{{ folder }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -11,8 +11,8 @@ app.template_folder = './templates'
 
 
 # Función para cargar los datos JSON de una asignatura específica
-def load_subject_data(year, term):
-    data_path = os.path.join('data', year, term + '.json')
+def load_subject_data(year, degree):
+    data_path = os.path.join('data', year, degree + '.json')
     if os.path.exists(data_path):
         with open(data_path, 'r') as f:
             data = json.load(f)
@@ -50,15 +50,34 @@ def generate_pie_charts(ratings_data):
 def serve_static(filename):
     return send_from_directory('static', filename)
 
+# Ruta principal para seleccionar la carpeta de la que se importarán los archivos JSON
+@app.route('/', methods=['GET'])
+def select_year():
+    folders = os.listdir('./data')
+    return render_template('select_year.html', folders=folders)
+
+# Ruta para mostrar la lista de archivos disponibles en una carpeta específica
+@app.route('/<year>', methods=['GET'])
+def select_degree(year):
+    folder_path = f'./data/{year}'
+    if os.path.isdir(folder_path):
+        files = os.listdir(folder_path)
+        # Remover la extensión .json de los nombres de archivo
+        files_without_extension = [file.split('.')[0] for file in files if file.endswith('.json')]
+        return render_template('select_degree.html', year=year, files=files_without_extension)
+    else:
+        return f"Error: La carpeta {year} no existe."
+
+
 # Ruta para visualizar datos de una asignatura específica
-@app.route('/<year>/<term>', methods=['GET', 'POST'])
-def visualize_data(year, term):
+@app.route('/<year>/<degree>', methods=['GET', 'POST'])
+def visualize_data(year, degree):
     if request.method == 'POST':
         subject_code = request.form['subject']
-        return redirect(url_for('visualize_data', year=year, term=term, subject_code=subject_code))
+        return redirect(url_for('visualize_data', year=year, degree=degree, subject_code=subject_code))
 
     subject_code = request.args.get('subject_code', None)
-    data = load_subject_data(year, term)
+    data = load_subject_data(year, degree)
     if data:
         if subject_code:
             for subject in data:
@@ -71,25 +90,25 @@ def visualize_data(year, term):
 
     return "Archivo no encontrado"
 
-@app.route('/<year>/<term>/select_multiple_subjects', methods=['GET'])
-def select_multiple_subjects(year, term):
+@app.route('/<year>/<degree>/select_multiple_subjects', methods=['GET'])
+def select_multiple_subjects(year, degree):
     # Encuentra la ruta del archivo JSON de las asignaturas
-    filename = f"./data/{year}/{term}.json"
+    filename = f"./data/{year}/{degree}.json"
     if os.path.exists(filename):
         # Carga los datos del archivo JSON
         with open(filename, 'r') as file:
             subjects = json.load(file)
-        return render_template('select_multiple_subjects.html', year=year, term=term, subjects=subjects)
+        return render_template('select_multiple_subjects.html', year=year, degree=degree, subjects=subjects)
     else:
         return "Error: El archivo de datos no existe."
 
-@app.route('/<year>/<term>/visualize_multiple_subjects', methods=['GET'])
-def visualize_multiple_subjects(year, term):
+@app.route('/<year>/<degree>/visualize_multiple_subjects', methods=['GET'])
+def visualize_multiple_subjects(year, degree):
     if request.method == 'GET':
         selected_subjects = request.args.getlist('asignaturas')  # Obtiene las asignaturas seleccionadas
         
         # Encuentra la ruta del archivo JSON de todas las asignaturas
-        filename = f"./data/{year}/{term}.json"
+        filename = f"./data/{year}/{degree}.json"
         if os.path.exists(filename):
             # Carga los datos del archivo JSON
             with open(filename, 'r') as file:
