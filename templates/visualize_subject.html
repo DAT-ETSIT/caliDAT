@@ -13,31 +13,31 @@
     </style>
 </head>
 <body>
-    <h1>Visualización de Datos de Asignatura</h1>
-    <h2>{{ subject_data.subject_name }}</h2>
+    <h1>{{ subject_data.subject_name }} - {{ subject_data.subject_code }}</h1>
+    <h2>Datos de matriculación</h2>
     <table border="1">
         <tr>
-            <th>Enrollment</th>
-            <th>Pass</th>
-            <th>Rate</th>
+            <th>Número de veces matriculado</th>
+            <th>Número de alumnos</th>
         </tr>
         <tr>
-            <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.performance.pass }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.performance.rate }}</td>
+            <td>Una vez</td>
+            <td>{{ subject_data.reports_info[0].enrollment_data.one_time }}</td>
         </tr>
         <tr>
-            <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.success.pass }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.success.rate }}</td>
+            <td>Dos veces</td>
+            <td>{{ subject_data.reports_info[0].enrollment_data.two_times }}</td>
         </tr>
         <tr>
+            <td>Tres veces o más</td>
+            <td>{{ subject_data.reports_info[0].enrollment_data.three_times }}</td>
+        </tr>
+        <tr>
+            <td>Total </td>
             <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.abandonment.pass }}</td>
-            <td>{{ subject_data.reports_info[0].ratings_data.abandonment.rate }}</td>
         </tr>
     </table>
-    <h2>Gráficos de Pie</h2>
+    <h2>Tasas</h2>
     <div id="pie-charts">
         <div class="pie-chart-container">
             <h3>Rendimiento</h3>
