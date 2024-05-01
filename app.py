@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 import os
 import json
 import pandas as pd
@@ -46,7 +46,9 @@ def generate_pie_charts(ratings_data):
     return charts
 
 
-
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('static', filename)
 
 # Ruta para visualizar datos de una asignatura específica
 @app.route('/<year>/<term>', methods=['GET', 'POST'])
@@ -68,38 +70,6 @@ def visualize_data(year, term):
             return render_template('select_subject.html', data=data)
 
     return "Archivo no encontrado"
-
-# Ruta para visualizar datos de asignaturas agrupadas
-@app.route('/grouped')
-def visualize_grouped_data():
-    selected_subjects = request.args.getlist('subject')
-    all_data = {}
-    for year_folder in os.listdir('data'):
-        year_path = os.path.join('data', year_folder)
-        if os.path.isdir(year_path):
-            for json_file in os.listdir(year_path):
-                if json_file.endswith('.json'):
-                    with open(os.path.join(year_path, json_file), 'r') as f:
-                        data = json.load(f)
-                    for subject in data:
-                        subject_code = subject['subject_code']
-                        if subject_code in selected_subjects:
-                            if subject_code not in all_data:
-                                all_data[subject_code] = []
-                            all_data[subject_code].append({
-                                'year': year_folder,
-                                'term': json_file.split('.')[0],
-                                'ratings_data': subject['reports_info'][0]['ratings_data']
-                            })
-
-    # Procesamiento de datos para agrupación
-    grouped_data = {}
-    for subject_code, data in all_data.items():
-        df = pd.DataFrame(data)
-        grouped_data[subject_code] = df.groupby(['year', 'term']).mean().reset_index()
-
-    # Renderizar plantilla HTML con datos agrupados
-    return render_template('grouped_visualize.html', grouped_data=grouped_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
