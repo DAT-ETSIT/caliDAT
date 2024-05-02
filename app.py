@@ -93,7 +93,7 @@ def visualize_data(year, degree):
 @app.route('/<year>/<degree>/visualize_multiple_subjects', methods=['GET'])
 def visualize_multiple_subjects(year, degree):
     if request.method == 'GET':
-        selected_subjects = request.args.getlist('asignaturas')  # Obtiene las asignaturas seleccionadas
+        selected_subjects = request.args.getlist('subjects')  # Obtiene las asignaturas seleccionadas
         
         # Encuentra la ruta del archivo JSON de todas las asignaturas
         filename = f"./data/{year}/{degree}.json"

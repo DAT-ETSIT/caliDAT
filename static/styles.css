@@ -6,14 +6,19 @@ body {
     padding: 0;
     background-color: #f8f9fa;
     color: #333;
+    text-align: center;
+    /* Centrar horizontalmente */
 }
 
 .container {
     width: 80%;
-    margin: 0 auto; /* Centrar horizontalmente */
+    margin: 0 auto;
+    /* Centrar horizontalmente */
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     color: #F65555;
 }
 
@@ -22,7 +27,8 @@ table {
     border-collapse: collapse;
 }
 
-table th, table td {
+table th,
+table td {
     padding: 10px;
     border: 1px solid #ddd;
 }
@@ -33,26 +39,29 @@ table th {
 
 li {
     list-style-type: none;
+    margin: 10px;
 }
 
 /* Estilos para gráficos de pie */
 .pie-chart-container {
-    width: 30%; /* Ajusta este valor según sea necesario */
-    margin-right: 20px; /* Espacio entre gráficos */
+    width: 30%;
+    /* Ajusta este valor según sea necesario */
+    margin-right: 20px;
+    /* Espacio entre gráficos */
     display: inline-block;
 }
 
 /* Estilos adicionales para pantallas más grandes */
 @media (max-width: 768px) {
     .pie-chart-container {
-        width: 100%; /* Ocupar todo el ancho en pantallas más pequeñas */
-        margin-bottom: 20px; /* Espacio entre gráficos en pantallas pequeñas */
+        width: 100%;
+        /* Ocupar todo el ancho en pantallas más pequeñas */
+        margin-bottom: 20px;
+        /* Espacio entre gráficos en pantallas pequeñas */
     }
 }
 
-
 /* Estilos para etiquetas emergentes de gráficos de pie */
-
 .hoverinfo {
     font-size: 14px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -75,4 +84,46 @@ li {
 
 .toggle-section {
     cursor: pointer;
+}
+
+/* Estilos adicionales para la lista de enlaces */
+ul {
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+a {
+    display: block;
+    padding: 10px;
+    background-color: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+a:hover {
+    background-color: #e9ecef;
+}
+
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+}
+
+.custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
 }
