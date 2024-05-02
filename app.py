@@ -25,7 +25,7 @@ def generate_pie_charts(ratings_data):
     charts = {}
     for metric in ['performance', 'success', 'abandonment']:
         enrolled = int(ratings_data[metric]['enrolled'])
-        passed = int(ratings_data[metric]['pass'])
+        passed = int(ratings_data[metric]['pass'])  if metric != 'abandonment' else int(ratings_data[metric]['drop'])
         if enrolled > 0:
             rate_percentage = passed / enrolled * 100
         else:
@@ -83,7 +83,7 @@ def visualize_data(year, degree):
             for subject in subjects:
                 if subject['subject_code'] == subject_code:
                     subject_data = subject
-                    pie_charts = generate_pie_charts(subject_data['reports_info'][0]['ratings_data'])
+                    pie_charts = generate_pie_charts(subject_data['reports_info']['ratings_data'])
                     return render_template('visualize_subject.html', subject_data=subject_data, pie_charts=pie_charts)
         else:
             return render_template('select_subject.html', year=year, degree=degree, subjects=subjects)
@@ -108,7 +108,7 @@ def visualize_multiple_subjects(year, degree):
             # Genera los gráficos de tarta para cada asignatura seleccionada
             pie_charts = {}
             for subject_data in selected_subjects_data:
-                pie_charts[subject_data['subject_code']] = generate_pie_charts(subject_data['reports_info'][0]['ratings_data'])
+                pie_charts[subject_data['subject_code']] = generate_pie_charts(subject_data['reports_info']['ratings_data'])
             
             # Renderiza la plantilla visualize_multiple_subjects.html para mostrar los datos de las asignaturas seleccionadas
             return render_template('visualize_multiple_subjects.html', subjects_data=selected_subjects_data, pie_charts=pie_charts)
