@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualización de Múltiples Asignaturas</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <div class="container">
         <h1>Visualización de Múltiples Asignaturas</h1>
 
         <!-- Itera sobre los datos de las asignaturas seleccionadas -->
         {% for subject_data in subjects_data %}
-            <div class="subject">
-                <h2>{{ subject_data.subject_name }} - {{ subject_data.subject_code }}</h2>
-                <h3>Datos de matriculación</h3>
+        <div class="subject">
+            <h2>{{ subject_data.subject_name }} - {{ subject_data.subject_code }}</h2>
+            <h3 class="toggle-section" onclick="toggleSection('{{ subject_data.subject_code }}-table')">Datos de matriculación
+                <span class="arrow">&#9650;</span></h3>
+            <div id="{{ subject_data.subject_code }}-table" class="content">
                 <table border="1">
                     <tr>
                         <th>Número de veces matriculado</th>
@@ -37,7 +41,10 @@
                         <td>{{ subject_data.reports_info.enrollment_data.total }}</td>
                     </tr>
                 </table>
-                <h3>Tasas</h3>
+            </div>
+            <h3 class="toggle-section" onclick="toggleSection('{{ subject_data.subject_code }}-charts')">Tasas <span
+                    class="arrow">&#9650;</span></h3>
+            <div id="{{ subject_data.subject_code }}-charts" class="content">
                 <div id="pie-charts">
                     <div class="pie-chart-container">
                         <h4>Rendimiento</h4>
@@ -53,7 +60,22 @@
                     </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var arrow = section.previousElementSibling.querySelector('.arrow');
+            if (section.style.display === "none") {
+                section.style.display = "";
+                arrow.innerHTML = "&#9650;"; // Cambia la flecha a arriba
+            } else {
+                section.style.display = "none";
+                arrow.innerHTML = "&#9660;"; // Cambia la flecha a abajo
+            }
+        }
+    </script>
 </body>
+
 </html>
