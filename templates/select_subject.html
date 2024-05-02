@@ -163,17 +163,6 @@
         <input type="submit" value="Visualizar">
     </form>
     <h1>Seleccionar Múltiples Asignaturas</h1>
-
-    <!-- Formulario para seleccionar múltiples asignaturas -->
-    <form action="/{{ year }}/{{ degree }}/visualize_multiple_subjects" method="get">
-        <label for="subjects">Selecciona las asignaturas:</label>
-        <select name="subjects" id="subjects" multiple>
-            {% for subject in subjects %}
-            <option value="{{ subject.subject_code }}">{{ subject.subject_name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Visualizar">
-    </form>
 </body>
 
 
