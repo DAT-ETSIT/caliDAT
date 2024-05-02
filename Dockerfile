@@ -10,4 +10,4 @@ RUN pip install -r ./requirements.txt
 
 EXPOSE 5000
 
-ENTRYPOINT [ "flask", "--app", "app", "run" ]
+ENTRYPOINT [ "flask", "--app", "app", "run", "--host", "0.0.0.0" ]
