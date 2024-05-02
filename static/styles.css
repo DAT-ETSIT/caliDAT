@@ -36,12 +36,20 @@ li {
 }
 
 /* Estilos para gráficos de pie */
-
 .pie-chart-container {
-    display: inline-block;
     width: 30%; /* Ajusta este valor según sea necesario */
     margin-right: 20px; /* Espacio entre gráficos */
+    display: inline-block;
 }
+
+/* Estilos adicionales para pantallas más grandes */
+@media (max-width: 768px) {
+    .pie-chart-container {
+        width: 100%; /* Ocupar todo el ancho en pantallas más pequeñas */
+        margin-bottom: 20px; /* Espacio entre gráficos en pantallas pequeñas */
+    }
+}
+
 
 /* Estilos para etiquetas emergentes de gráficos de pie */
 
@@ -60,4 +68,11 @@ li {
     display: block;
 }
 
-/* Estilos adicionales según sea necesario */
+.arrow {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.toggle-section {
+    cursor: pointer;
+}

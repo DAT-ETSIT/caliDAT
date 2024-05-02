@@ -8,8 +8,8 @@
 </head>
 <body>
     <h1>{{ subject_data.subject_name }} - {{ subject_data.subject_code }}</h1>
-    <h2>Datos de matriculación</h2>
-    <table border="1">
+    <h2 class="toggle-section" onclick="toggleSection('enrollment-table')">Datos de matriculación <span class="arrow">&#9650;</span></h2>
+    <table border="1" id="enrollment-table">
         <tr>
             <th>Número de veces matriculado</th>
             <th>Número de alumnos</th>
@@ -31,7 +31,7 @@
             <td>{{ subject_data.reports_info[0].enrollment_data.total }}</td>
         </tr>
     </table>
-    <h2>Tasas</h2>
+    <h2 class="toggle-section" onclick="toggleSection('pie-charts')">Tasas <span class="arrow">&#9650;</span></h2>
     <div id="pie-charts">
         <div class="pie-chart-container">
             <h3>Rendimiento</h3>
@@ -46,5 +46,19 @@
             {{ pie_charts['abandonment']|safe }}
         </div>
     </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            var arrow = section.previousElementSibling.querySelector('.arrow');
+            if (section.style.display === "none") {
+                section.style.display = "";
+                arrow.innerHTML = "&#9650;";
+            } else {
+                section.style.display = "none";
+                arrow.innerHTML = "&#9660;";
+            }
+        }
+    </script>
 </body>
 </html>
