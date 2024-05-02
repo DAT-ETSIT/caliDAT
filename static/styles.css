@@ -31,6 +31,10 @@ table th {
     background-color: #f2f2f2;
 }
 
+li {
+    list-style-type: none;
+}
+
 /* Estilos para gráficos de pie */
 
 .pie-chart-container {

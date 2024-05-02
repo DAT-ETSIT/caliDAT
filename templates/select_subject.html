@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar Asignatura</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
     <h1>Seleccionar Asignatura</h1>
     <form action="" method="post">
         <label for="subject">Seleccionar Asignatura:</label><br>
         <select name="subject">
-            {% for subject in data %}
-                <option value="{{ subject.subject_code }}">{{ subject.subject_name }}</option>
+            {% for subject in subjects %}
+            <option value="{{ subject.subject_code }}">{{ subject.subject_name }}</option>
             {% endfor %}
         </select><br><br>
         <input type="submit" value="Visualizar">
     </form>
+    <h1>Seleccionar Múltiples Asignaturas</h1>
+
+    <!-- Formulario para seleccionar múltiples asignaturas -->
+    <form action="/{{ year }}/{{ degree }}/visualize_multiple_subjects" method="get">
+        <label for="asignaturas">Selecciona las asignaturas:</label>
+        <select name="asignaturas" id="asignaturas" multiple>
+            {% for subject in subjects %}
+            <option value="{{ subject.subject_code }}">{{ subject.subject_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Visualizar">
+    </form>
 </body>
+
 </html>

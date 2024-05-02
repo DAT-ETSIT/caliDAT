@@ -30,17 +30,17 @@ def generate_pie_charts(ratings_data):
             rate_percentage = passed / enrolled * 100
         else:
             rate_percentage = 0
-        labels = ['Aprobados', 'Suspensos']
+        labels = ['Aprobados', 'Suspensos'] if metric != 'abandonment' else ['No presentados', 'Presentados']
         values = [passed, enrolled - passed]
         fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
         if fig.data:
             # Asegurarse de que colors esté inicializado
             if not fig.data[0].marker.colors:
-                fig.data[0].marker.colors = ['green', 'red']
+                fig.data[0].marker.colors = ['green', 'red'] if metric != 'abandonment' else ['red', 'green']
             else:
                 # Añadir identificador único a cada "slice" solo si hay datos
                 for i, label in enumerate(labels):
-                    fig.data[0].marker.colors[i] = 'red' if label == 'Suspensos' else 'green'
+                    fig.data[0].marker.colors[i] = 'red' if (label == 'Suspensos' or label == 'No presentados') else 'green'
         fig.update_traces(hoverinfo='label+percent+value')
         charts[metric] = fig.to_html(full_html=False)
     return charts
@@ -77,30 +77,18 @@ def visualize_data(year, degree):
         return redirect(url_for('visualize_data', year=year, degree=degree, subject_code=subject_code))
 
     subject_code = request.args.get('subject_code', None)
-    data = load_subject_data(year, degree)
-    if data:
+    subjects = load_subject_data(year, degree)
+    if subjects:
         if subject_code:
-            for subject in data:
+            for subject in subjects:
                 if subject['subject_code'] == subject_code:
                     subject_data = subject
                     pie_charts = generate_pie_charts(subject_data['reports_info'][0]['ratings_data'])
                     return render_template('visualize_subject.html', subject_data=subject_data, pie_charts=pie_charts)
         else:
-            return render_template('select_subject.html', data=data)
+            return render_template('select_subject.html', year=year, degree=degree, subjects=subjects)
 
     return "Archivo no encontrado"
-
-@app.route('/<year>/<degree>/select_multiple_subjects', methods=['GET'])
-def select_multiple_subjects(year, degree):
-    # Encuentra la ruta del archivo JSON de las asignaturas
-    filename = f"./data/{year}/{degree}.json"
-    if os.path.exists(filename):
-        # Carga los datos del archivo JSON
-        with open(filename, 'r') as file:
-            subjects = json.load(file)
-        return render_template('select_multiple_subjects.html', year=year, degree=degree, subjects=subjects)
-    else:
-        return "Error: El archivo de datos no existe."
 
 @app.route('/<year>/<degree>/visualize_multiple_subjects', methods=['GET'])
 def visualize_multiple_subjects(year, degree):
